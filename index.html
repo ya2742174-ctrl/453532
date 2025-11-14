@@ -311,25 +311,45 @@ async function editPrompt(id){
     }
 }
 
-async function toggleLike(id){ 
-    try {
-        const docRef = db.collection(PROMPTS_COLLECTION).doc(id);
-        // زيادة العدد في قاعدة البيانات
-        await docRef.update({ 
-            likes: firebase.firestore.FieldValue.increment(1) 
-        });
-        render();
-    } catch(e) {
-        alert('حدث خطأ في الإعجاب.');
-    }
-}
+// 5. تعديل وظائف التفاعل (الحذف، الإعجاب، التعديل) لاستخدام Firestore
+// ... (بقية الوظائف مثل copyPrompt و deletePrompt و editPrompt بدون تغيير)
 
-function refreshFilterOptions(tags){ 
-  const select = el('filterTag'); 
-  const uniqueTags = Array.from(new Set(tags));
-  const old = select.value; 
-  select.innerHTML = '<option value="">تصفية حسب الوسم</option>' + uniqueTags.map(t=>`<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join(''); 
-  if(uniqueTags.includes(old)) select.value = old; 
+async function toggleLike(id){ 
+    const LIKES_STORAGE_KEY = 'yousef_liked_prompts';
+    // 1. جلب قائمة البرومبتات التي أعجب بها المستخدم من Local Storage
+    let likedPrompts = JSON.parse(localStorage.getItem(LIKES_STORAGE_KEY) || '[]');
+    
+    // 2. التحقق مما إذا كان المستخدم قد أعجب بهذا البرومبت مسبقاً
+    const isLiked = likedPrompts.includes(id);
+
+    const docRef = db.collection(PROMPTS_COLLECTION).doc(id);
+    
+    try {
+        if (isLiked) {
+            // 3. حالة الإلغاء (Unlike): إنقاص العدد بـ 1 وإزالة الـ ID من Local Storage
+            await docRef.update({ 
+                likes: firebase.firestore.FieldValue.increment(-1) 
+            });
+            likedPrompts = likedPrompts.filter(likedId => likedId !== id);
+            alert('تم إلغاء الإعجاب.');
+        } else {
+            // 4. حالة الإعجاب (Like): زيادة العدد بـ 1 وإضافة الـ ID إلى Local Storage
+            await docRef.update({ 
+                likes: firebase.firestore.FieldValue.increment(1) 
+            });
+            likedPrompts.push(id);
+            alert('أعجبك البرومبت!');
+        }
+        
+        // 5. حفظ القائمة المحدثة في Local Storage للمتصفح الحالي
+        localStorage.setItem(LIKES_STORAGE_KEY, JSON.stringify(likedPrompts));
+        
+        render(); // تحديث العرض لرؤية التغيير في العدد
+        
+    } catch(e) {
+        console.error("خطأ في الإعجاب: ", e);
+        alert('حدث خطأ في عملية الإعجاب/الإلغاء.');
+    }
 }
 
 el('filterTag').addEventListener('change', render);
@@ -342,5 +362,6 @@ render();
   </script>
 </body>
 </html>
+
 
 
