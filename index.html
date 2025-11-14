@@ -232,7 +232,7 @@ el('clearBtn').addEventListener('click', ()=>{ el('title').value=''; el('prompt'
 
 // 5. تعديل وظائف التفاعل (الحذف، الإعجاب، التعديل) لاستخدام Firestore
 
-// وظائف التعديل والحذف لم تعد تظهر في الواجهة ولكنها موجودة
+// وظائف التعديل والحذف لم تعد تظهر في الواجهة
 function copyPrompt(id){ 
     db.collection(PROMPTS_COLLECTION).doc(id).get().then(doc => {
         if (doc.exists) {
