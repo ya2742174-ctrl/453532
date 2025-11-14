@@ -105,191 +105,190 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
   <script>
-    // 2. مفاتيح إعدادات Firebase الخاصة بك (من الصورة التي أرسلتها)
-    const firebaseConfig = {
-      apiKey: "AIzaSyP016himjW1TiccHc0SiByPjOW0Vzv_Vs",
-      authDomain: "yousefprompts-public-58082.firebaseapp.com",
-      projectId: "yousefprompts-public-58082",
-      storageBucket: "yousefprompts-public-58082.appspot.com",
-      messagingSenderId: "1029355842188",
-      appId: "1:1029355842188:web:b72df7144a0027c2e6da39",
-      measurementId: "G-JY7D5F10YT"
-    };
+  // /////////////////////////////////////////////////////////////
+// // محتوى وسم <script> بالكامل بعد الدمج //
+// /////////////////////////////////////////////////////////////
 
-    // 3. تهيئة التطبيق وقاعدة البيانات
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const PROMPTS_COLLECTION = 'prompts'; // اسم المجموعة
+// 1. مفاتيح إعدادات Firebase الخاصة بك
+const firebaseConfig = {
+    // المفاتيح التي نسختها من صورتك
+    apiKey: "AIzaSyP016himjW1TiccHc0SiByPjOW0Vzv_Vs",
+    authDomain: "yousefprompts-public-58082.firebaseapp.com",
+    projectId: "yousefprompts-public-58082",
+    storageBucket: "yousefprompts-public-58082.appspot.com",
+    messagingSenderId: "1029355842188",
+    appId: "1:1029355842188:web:b72df7144a0027c2e6da39",
+    measurementId: "G-JY7D5F10YT"
+};
 
-    const el = id => document.getElementById(id);
+// 2. تهيئة التطبيق وقاعدة البيانات
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const PROMPTS_COLLECTION = 'prompts'; // اسم المجموعة
 
-    function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+const el = id => document.getElementById(id);
 
-    // 4. تعديل وظيفة العرض (render) لسحب البيانات من Firestore
-    const render = async () => { 
-      const container = el('postsContainer');
-      container.innerHTML = '';
-      
-      let query = db.collection(PROMPTS_COLLECTION).orderBy('createdAt', 'desc');
-
-      // تطبيق فلاتر البحث محليًا بعد جلب البيانات (يُفضل استخدام .where() لفلترة أكبر في Firestore)
-      const filter = el('filterTag').value.trim();
-      const q = el('searchInput').value.trim().toLowerCase();
-
-      let visible = [];
-      try {
-        const snapshot = await query.get();
-        snapshot.forEach(doc => {
-            // إضافة البيانات مع ID الوثيقة
-            const p = { id: doc.id, ...doc.data() }; 
-
-            // تطبيق البحث والتصفية
-            if(filter && p.tag !== filter) return;
-            if(q && !((p.title||'').toLowerCase().includes(q) || p.prompt.toLowerCase().includes(q) || (p.author||'').toLowerCase().includes(q) || (p.tag||'').toLowerCase().includes(q))) return;
-
-            visible.push(p);
-        });
-      } catch (e) {
-          console.error("خطأ في جلب البيانات:", e);
-          alert('حدث خطأ أثناء جلب المنشورات من قاعدة البيانات.');
-          return;
-      }
-      
-
-      if(visible.length===0){ el('emptyState').style.display='block'; } else { el('emptyState').style.display='none'; }
-      el('count').innerText = visible.length;
-      
-      visible.forEach(p=>{
-        const div = document.createElement('div'); div.className='post';
-        
-        // تحويل وقت الخادم إلى تاريخ محلي
-        const displayDate = p.createdAt && p.createdAt.toDate ? p.createdAt.toDate().toLocaleString('ar-EG') : 'الآن';
-
-        div.innerHTML = `
-          <div class="meta">
-            <div>
-              <strong>${escapeHtml(p.title || 'بدون عنوان')}</strong>
-              <div class="muted">${escapeHtml(p.author || 'مجهول')} · ${displayDate}</div>
-            </div>
-            <div style="text-align:left;min-width:140px">
-              <span class="chip">${escapeHtml(p.tag||'عام')}</span>
-            </div>
-          </div>
-          <div class="content">${escapeHtml(p.prompt)}</div>
-          <div class="actions">
-            <button onclick='copyPrompt("${p.id}")'>نسخ</button>
-            <button onclick='toggleLike("${p.id}")'>${p.likes||0} ❤️</button>
-            <button onclick='editPrompt("${p.id}")' style="background:#f97316">تعديل</button>
-            <button onclick='deletePrompt("${p.id}")' style="background:#ef4444">حذف</button>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-
-      // تحديث خيارات التصفية بناءً على الوسوم الموجودة في Firestore
-      refreshFilterOptions(visible.map(p=>p.tag).filter(Boolean));
-    }
+function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
 
-    // 5. تعديل وظيفة النشر (Publish) لإرسال البيانات إلى Firestore
-    document.getElementById('publishBtn').addEventListener('click', async ()=>{
-      const prompt = el('prompt').value.trim(); if(!prompt){ alert('اكتب نص البرومت قبل النشر.'); return; }
-      const postData = {
-        title: el('title').value.trim(),
-        author: el('author').value.trim(),
-        tag: el('tag').value.trim(),
-        prompt: prompt,
-        // استخدام وقت الخادم لتوحيد التاريخ عبر كل المستخدمين
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(), 
-        likes: 0
-      };
-      
-      try {
-        // استخدم add لإنشاء وثيقة جديدة
-        await db.collection(PROMPTS_COLLECTION).add(postData);
-        alert('تم نشر البرومت بنجاح!');
-        // إفراغ الحقول
-        el('title').value=''; el('prompt').value=''; el('tag').value='';
-        // إعادة عرض المنشورات الجديدة
-        render(); 
-      } catch (e) {
-        console.error("خطأ في إضافة الوثيقة: ", e);
-        alert('حدث خطأ أثناء النشر.');
-      }
+// 3. وظيفة العرض (render) الجديدة لسحب البيانات من Firestore
+const render = async () => { 
+  const container = el('postsContainer');
+  container.innerHTML = '';
+  
+  // يتم ترتيب المنشورات حسب وقت النشر الأحدث
+  let query = db.collection(PROMPTS_COLLECTION).orderBy('createdAt', 'desc');
+
+  const filter = el('filterTag').value.trim();
+  const q = el('searchInput').value.trim().toLowerCase();
+
+  let visible = [];
+  try {
+    const snapshot = await query.get();
+    snapshot.forEach(doc => {
+        // إضافة البيانات مع ID الوثيقة
+        const p = { id: doc.id, ...doc.data() }; 
+
+        // تطبيق البحث والتصفية
+        if(filter && p.tag !== filter) return;
+        if(q && !((p.title||'').toLowerCase().includes(q) || p.prompt.toLowerCase().includes(q) || (p.author||'').toLowerCase().includes(q) || (p.tag||'').toLowerCase().includes(q))) return;
+
+        visible.push(p);
     });
+  } catch (e) {
+      console.error("خطأ في جلب البيانات:", e);
+      // alert('حدث خطأ أثناء جلب المنشورات من قاعدة البيانات.'); // لا تظهر تنبيه الجلب في كل مرة
+      return;
+  }
+  
 
-    el('clearBtn').addEventListener('click', ()=>{ el('title').value=''; el('prompt').value=''; el('tag').value=''; el('author').value=''; });
+  if(visible.length===0){ el('emptyState').style.display='block'; } else { el('emptyState').style.display='none'; }
+  el('count').innerText = visible.length;
+  
+  visible.forEach(p=>{
+    const div = document.createElement('div'); div.className='post';
+    
+    // تحويل وقت الخادم إلى تاريخ محلي
+    const displayDate = p.createdAt && p.createdAt.toDate ? p.createdAt.toDate().toLocaleString('ar-EG') : 'الآن';
 
-    // 6. تعديل وظائف التفاعل (الحذف، الإعجاب، التعديل) لاستخدام Firestore
-    function copyPrompt(id){ 
-        db.collection(PROMPTS_COLLECTION).doc(id).get().then(doc => {
-            if (doc.exists) {
-                navigator.clipboard.writeText(doc.data().prompt).then(()=>{ alert('نُسخ النص إلى الحافظة!'); }); 
-            }
+    div.innerHTML = `
+      <div class="meta">
+        <div>
+          <strong>${escapeHtml(p.title || 'بدون عنوان')}</strong>
+          <div class="muted">${escapeHtml(p.author || 'مجهول')} · ${displayDate}</div>
+        </div>
+        <div style="text-align:left;min-width:140px">
+          <span class="chip">${escapeHtml(p.tag||'عام')}</span>
+        </div>
+      </div>
+      <div class="content">${escapeHtml(p.prompt)}</div>
+      <div class="actions">
+        <button onclick='copyPrompt("${p.id}")'>نسخ</button>
+        <button onclick='toggleLike("${p.id}")'>${p.likes||0} ❤️</button>
+        <button onclick='editPrompt("${p.id}")' style="background:#f97316">تعديل</button>
+        <button onclick='deletePrompt("${p.id}")' style="background:#ef4444">حذف</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  refreshFilterOptions(visible.map(p=>p.tag).filter(Boolean));
+}
+
+
+// 4. تعديل وظيفة النشر (Publish) لإرسال البيانات إلى Firestore
+document.getElementById('publishBtn').addEventListener('click', async ()=>{
+  const prompt = el('prompt').value.trim(); if(!prompt){ alert('اكتب نص البرومت قبل النشر.'); return; }
+  const postData = {
+    title: el('title').value.trim(),
+    author: el('author').value.trim(),
+    tag: el('tag').value.trim(),
+    prompt: prompt,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(), 
+    likes: 0
+  };
+  
+  try {
+    await db.collection(PROMPTS_COLLECTION).add(postData);
+    alert('تم نشر البرومت بنجاح!');
+    el('title').value=''; el('prompt').value=''; el('tag').value='';
+    render(); 
+  } catch (e) {
+    console.error("خطأ في إضافة الوثيقة: ", e);
+    alert('حدث خطأ أثناء النشر.'); // هذا هو الخطأ الذي ظهر لك
+  }
+});
+
+el('clearBtn').addEventListener('click', ()=>{ el('title').value=''; el('prompt').value=''; el('tag').value=''; el('author').value=''; });
+
+// 5. تعديل وظائف التفاعل (الحذف، الإعجاب، التعديل) لاستخدام Firestore
+function copyPrompt(id){ 
+    db.collection(PROMPTS_COLLECTION).doc(id).get().then(doc => {
+        if (doc.exists) {
+            navigator.clipboard.writeText(doc.data().prompt).then(()=>{ alert('نُسخ النص إلى الحافظة!'); }); 
+        }
+    });
+}
+
+async function deletePrompt(id){ 
+  if(!confirm('هل تريد حذف هذا البرومت؟')) return; 
+  try {
+    await db.collection(PROMPTS_COLLECTION).doc(id).delete();
+    render(); 
+  } catch(e) {
+    alert('حدث خطأ في الحذف.');
+  }
+}
+
+async function editPrompt(id){ 
+    const currentDoc = await db.collection(PROMPTS_COLLECTION).doc(id).get();
+    if (!currentDoc.exists) return;
+    const p = currentDoc.data();
+    
+    const newText = prompt('حرر نص البرومت:', p.prompt); 
+    if(newText===null) return; 
+    
+    const newTitle = prompt('غير العنوان (اترك فارغًا للإبقاء):', p.title) || p.title;
+
+    try {
+        await db.collection(PROMPTS_COLLECTION).doc(id).update({
+            prompt: newText,
+            title: newTitle
         });
+        render();
+    } catch(e) {
+        alert('حدث خطأ في التعديل.');
     }
+}
 
-    async function deletePrompt(id){ 
-      if(!confirm('هل تريد حذف هذا البرومت؟')) return; 
-      try {
-        await db.collection(PROMPTS_COLLECTION).doc(id).delete();
-        render(); 
-      } catch(e) {
-        alert('حدث خطأ في الحذف.');
-      }
+async function toggleLike(id){ 
+    try {
+        const docRef = db.collection(PROMPTS_COLLECTION).doc(id);
+        // زيادة العدد في قاعدة البيانات
+        await docRef.update({ 
+            likes: firebase.firestore.FieldValue.increment(1) 
+        });
+        render();
+    } catch(e) {
+        alert('حدث خطأ في الإعجاب.');
     }
+}
 
-    async function editPrompt(id){ 
-        const currentDoc = await db.collection(PROMPTS_COLLECTION).doc(id).get();
-        if (!currentDoc.exists) return;
-        const p = currentDoc.data();
-        
-        const newText = prompt('حرر نص البرومت:', p.prompt); 
-        if(newText===null) return; 
-        
-        const newTitle = prompt('غير العنوان (اترك فارغًا للإبقاء):', p.title) || p.title;
+function refreshFilterOptions(tags){ 
+  const select = el('filterTag'); 
+  const uniqueTags = Array.from(new Set(tags));
+  const old = select.value; 
+  select.innerHTML = '<option value="">تصفية حسب الوسم</option>' + uniqueTags.map(t=>`<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join(''); 
+  if(uniqueTags.includes(old)) select.value = old; 
+}
 
-        try {
-            await db.collection(PROMPTS_COLLECTION).doc(id).update({
-                prompt: newText,
-                title: newTitle
-            });
-            render();
-        } catch(e) {
-            alert('حدث خطأ في التعديل.');
-        }
-    }
+el('filterTag').addEventListener('change', render);
+el('searchInput').addEventListener('input', render);
 
-    async function toggleLike(id){ 
-        try {
-            const docRef = db.collection(PROMPTS_COLLECTION).doc(id);
-            // زيادة العدد في قاعدة البيانات
-            await docRef.update({ 
-                likes: firebase.firestore.FieldValue.increment(1) 
-            });
-            render();
-        } catch(e) {
-            alert('حدث خطأ في الإعجاب.');
-        }
-    }
+// (تم إزالة كود التصدير والاستيراد لأنه لا يعمل مع Firebase)
 
-    // 7. تحديث خيارات التصفية
-    function refreshFilterOptions(tags){ 
-      const select = el('filterTag'); 
-      const uniqueTags = Array.from(new Set(tags));
-      const old = select.value; 
-      select.innerHTML = '<option value="">تصفية حسب الوسم</option>' + uniqueTags.map(t=>`<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join(''); 
-      if(uniqueTags.includes(old)) select.value = old; 
-    }
-
-    el('filterTag').addEventListener('change', render);
-    el('searchInput').addEventListener('input', render);
-
-    // إزالة وظائف التصدير والاستيراد لعدم عملها مع Firebase
-    // تم حذف الكود المتعلق بـ exportBtn و importBtn و importFile
-
-    // init
-    render();
+// init
+render();
   </script>
 </body>
 </html>
