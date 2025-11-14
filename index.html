@@ -179,7 +179,8 @@ const render = async () => { 
     // ⭐️⭐️ التحقق من حالة الإعجاب وتغيير الزر
     const isLiked = likedPrompts.includes(p.id);
     const likeButtonText = isLiked ? 'أعجبني' : 'إعجاب'; // تغيير النص
-    const likeButtonStyle = isLiked ? 'background:#ef4444' : ''; // تغيير اللون إذا كان معجباً به
+    // هنا نستخدم اللون الأحمر (#ef4444) لزر الإعجاب عند الضغط عليه.
+    const likeButtonStyle = isLiked ? 'background:#ef4444' : ''; 
 
     // العودة إلى التصميم الأصلي (نسخ + إعجاب فقط)
     div.innerHTML = `
@@ -230,9 +231,8 @@ document.getElementById('publishBtn').addEventListener('click', async ()=>{
 
 el('clearBtn').addEventListener('click', ()=>{ el('title').value=''; el('prompt').value=''; el('tag').value=''; el('author').value=''; });
 
-// 5. تعديل وظائف التفاعل (الحذف، الإعجاب، التعديل) لاستخدام Firestore
+// 5. وظائف التفاعل (نسخ، إعجاب، حذف، تعديل)
 
-// وظائف التعديل والحذف لم تعد تظهر في الواجهة
 function copyPrompt(id){ 
     db.collection(PROMPTS_COLLECTION).doc(id).get().then(doc => {
         if (doc.exists) {
@@ -241,6 +241,7 @@ function copyPrompt(id){ 
     });
 }
 
+// وظائف الحذف والتعديل موجودة هنا في الكود الخلفي، ولكن تم إخفاؤها من الواجهة للحفاظ على التصميم القديم.
 async function deletePrompt(id){ 
   if(!confirm('هل تريد حذف هذا البرومت؟')) return; 
   try {
@@ -272,7 +273,7 @@ async function editPrompt(id){ 
     }
 }
 
-// ⭐️⭐️ الوظيفة toggleLike الجديدة لدعم الإعجاب/الإلغاء مرة واحدة
+// ⭐️⭐️ الوظيفة toggleLike لدعم الإعجاب/الإلغاء مرة واحدة
 async function toggleLike(id){ 
     let likedPrompts = JSON.parse(localStorage.getItem(LIKES_STORAGE_KEY) || '[]');
     
@@ -282,14 +283,14 @@ async function toggleLike(id){
     
     try {
         if (isLiked) {
-            // حالة الإلغاء (Unlike): إنقاص العدد بـ 1 وإزالة الـ ID من Local Storage
+            // حالة الإلغاء: إنقاص العدد بـ 1 وإزالة الـ ID من Local Storage
             await docRef.update({ 
                 likes: firebase.firestore.FieldValue.increment(-1) 
             });
             likedPrompts = likedPrompts.filter(likedId => likedId !== id);
             alert('تم إلغاء الإعجاب.');
         } else {
-            // حالة الإعجاب (Like): زيادة العدد بـ 1 وإضافة الـ ID إلى Local Storage
+            // حالة الإعجاب: زيادة العدد بـ 1 وإضافة الـ ID إلى Local Storage
             await docRef.update({ 
                 likes: firebase.firestore.FieldValue.increment(1) 
             });
