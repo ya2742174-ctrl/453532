@@ -38,7 +38,7 @@
     <div class="brand">
       <div class="logo">يوسف</div>
       <div>
-        <h1>يوسف</h1>
+        <h1>يوسف وا مكاريوس</h1>
         <p class="lead">منصة بسيطة لنشر ومشاركة البرومبتات — أنشر، انسخ، وجرّب</p>
       </div>
     </div>
@@ -185,8 +185,6 @@ const render = async () => {
       <div class="actions">
         <button onclick='copyPrompt("${p.id}")'>نسخ</button>
         <button onclick='toggleLike("${p.id}")'>${p.likes||0} ❤️</button>
-        <button onclick='editPrompt("${p.id}")' style="background:#f97316">تعديل</button>
-        <button onclick='deletePrompt("${p.id}")' style="background:#ef4444">حذف</button>
       </div>
     `;
     container.appendChild(div);
@@ -292,3 +290,4 @@ render();
   </script>
 </body>
 </html>
+
