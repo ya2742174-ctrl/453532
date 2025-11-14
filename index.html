@@ -181,6 +181,7 @@ const render = async () => { 
     const likeButtonText = isLiked ? 'أعجبني' : 'إعجاب'; // تغيير النص
     const likeButtonStyle = isLiked ? 'background:#ef4444' : ''; // تغيير اللون إذا كان معجباً به
 
+    // العودة إلى التصميم الأصلي (نسخ + إعجاب فقط)
     div.innerHTML = `
       <div class="meta">
         <div>
@@ -195,8 +196,6 @@ const render = async () => { 
       <div class="actions">
         <button onclick='copyPrompt("${p.id}")'>نسخ</button>
         <button onclick='toggleLike("${p.id}")' style="${likeButtonStyle}">${p.likes||0} ❤️ ${likeButtonText}</button>
-        <button onclick='editPrompt("${p.id}")' style="background:#f97316">تعديل</button>
-        <button onclick='deletePrompt("${p.id}")' style="background:#ef4444">حذف</button>
       </div>
     `;
     container.appendChild(div);
@@ -232,6 +231,8 @@ document.getElementById('publishBtn').addEventListener('click', async ()=>{
 el('clearBtn').addEventListener('click', ()=>{ el('title').value=''; el('prompt').value=''; el('tag').value=''; el('author').value=''; });
 
 // 5. تعديل وظائف التفاعل (الحذف، الإعجاب، التعديل) لاستخدام Firestore
+
+// وظائف التعديل والحذف لم تعد تظهر في الواجهة ولكنها موجودة
 function copyPrompt(id){ 
     db.collection(PROMPTS_COLLECTION).doc(id).get().then(doc => {
         if (doc.exists) {
