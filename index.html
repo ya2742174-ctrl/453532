@@ -1,113 +1,111 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>يوسف — نشر البرومبتات</title>
-  <style>
-    :root{--accent:#0ea5a3;--bg:#0f172a;--card:#0b1220;--glass:rgba(255,255,255,0.04)}
-    *{box-sizing:border-box;font-family: Cairo, 'Segoe UI', Tahoma, sans-serif}
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071029 0%, #0b1220 100%);color:#e6eef6}
-    header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid rgba(255,255,255,0.03)}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#2563eb);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:white}
-    h1{margin:0;font-size:18px}
-    p.lead{margin:0;color:#9fb3c7;font-size:13px}
-    main{padding:20px;max-width:1100px;margin:18px auto}
-    .grid{display:grid;grid-template-columns:360px 1fr;gap:18px}
-    .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(3,7,18,0.6)}
-    label{font-size:13px;color:#bcd5df}
-    input[type=text],textarea,select{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);color:inherit}
-    textarea{min-height:120px;resize:vertical}
-    button{background:var(--accent);border:none;color:#052022;padding:10px 12px;border-radius:10px;font-weight:600;cursor:pointer}
-    .muted{color:#92a9b9;font-size:13px}
-    .posts{display:flex;flex-direction:column;gap:12px}
-    .post{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-    .post .meta{display:flex;justify-content:space-between;gap:8px;align-items:center}
-    .post .content{white-space:pre-wrap;margin-top:10px;font-family:inherit}
-    .actions{display:flex;gap:8px;margin-top:10px}
-    .chip{background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:999px;font-size:13px}
-    .search{display:flex;gap:8px;margin-bottom:12px}
-    .empty{color:#7f98a9;text-align:center;padding:40px 10px}
-    footer{max-width:1100px;margin:10px auto;text-align:center;color:#7da9bb;font-size:13px}
-    @media(max-width:880px){.grid{grid-template-columns:1fr}header{flex-wrap:wrap;gap:8px}.brand p{display:none}}
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>يوسف — نشر البرومبتات</title>
+  <style>
+    :root{--accent:#0ea5a3;--bg:#0f172a;--card:#0b1220;--glass:rgba(255,255,255,0.04)}
+    *{box-sizing:border-box;font-family: Cairo, 'Segoe UI', Tahoma, sans-serif}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071029 0%, #0b1220 100%);color:#e6eef6}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#2563eb);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:white}
+    h1{margin:0;font-size:18px}
+    p.lead{margin:0;color:#9fb3c7;font-size:13px}
+    main{padding:20px;max-width:1100px;margin:18px auto}
+    .grid{display:grid;grid-template-columns:360px 1fr;gap:18px}
+    .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(3,7,18,0.6)}
+    label{font-size:13px;color:#bcd5df}
+    input[type=text],textarea,select{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);color:inherit}
+    textarea{min-height:120px;resize:vertical}
+    button{background:var(--accent);border:none;color:#052022;padding:10px 12px;border-radius:10px;font-weight:600;cursor:pointer}
+    .muted{color:#92a9b9;font-size:13px}
+    .posts{display:flex;flex-direction:column;gap:12px}
+    .post{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+    .post .meta{display:flex;justify-content:space-between;gap:8px;align-items:center}
+    .post .content{white-space:pre-wrap;margin-top:10px;font-family:inherit}
+    .actions{display:flex;gap:8px;margin-top:10px}
+    .chip{background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:999px;font-size:13px}
+    .search{display:flex;gap:8px;margin-bottom:12px}
+    .empty{color:#7f98a9;text-align:center;padding:40px 10px}
+    footer{max-width:1100px;margin:10px auto;text-align:center;color:#7da9bb;font-size:13px}
+    @media(max-width:880px){.grid{grid-template-columns:1fr}header{flex-wrap:wrap;gap:8px}.brand p{display:none}}
+  </style>
 </head>
 <body>
-  <header>
-    <div class="brand">
-      <div class="logo">يوسف</div>
-      <div>
-        <h1>يوسف وا مكاريوس</h1>
-        <p class="lead">منصة بسيطة لنشر ومشاركة البرومبتات — أنشر، انسخ، وجرّب</p>
-      </div>
-    </div>
-    <div class="muted">البيانات محفوظة الآن في قاعدة بيانات Firebase Firestore المشتركة.</div>
-  </header>
+  <header>
+    <div class="brand">
+      <div class="logo">يوسف</div>
+      <div>
+        <h1>يوسف وا مكاريوس</h1>
+        <p class="lead">منصة بسيطة لنشر ومشاركة البرومبتات — أنشر، انسخ، وجرّب</p>
+      </div>
+    </div>
+    <div class="muted">البيانات محفوظة الآن في قاعدة بيانات Firebase Firestore المشتركة.</div>
+  </header>
 
-  <main>
-    <div class="grid">
-      <aside class="card">
-        <h3>انشر برومت جديد</h3>
-        <div style="height:8px"></div>
-        <label>اسم المبدع (اختياري)</label>
-        <input id="author" type="text" placeholder="مثال: يوسف" />
+  <main>
+    <div class="grid">
+      <aside class="card">
+        <h3>انشر برومت جديد</h3>
+        <div style="height:8px"></div>
+        <label>اسم المبدع (اختياري)</label>
+        <input id="author" type="text" placeholder="مثال: يوسف" />
 
-        <label>عنوان مختصر (اختياري)</label>
-        <input id="title" type="text" placeholder="عنوان للبرومت" />
+        <label>عنوان مختصر (اختياري)</label>
+        <input id="title" type="text" placeholder="عنوان للبرومت" />
 
-        <label>نص البرومت</label>
-        <textarea id="prompt" placeholder="اكتب البرومت هنا... مثال: 'أعطني قصة قصيرة عن...'" ></textarea>
+        <label>نص البرومت</label>
+        <textarea id="prompt" placeholder="اكتب البرومت هنا... مثال: 'أعطني قصة قصيرة عن...'" ></textarea>
 
-        <label>وسم/تصنيف (اختياري)</label>
-        <input id="tag" type="text" placeholder="مثال: محادثة، صورة، ترجمة" />
-        
-        <label>رابط صورة توضيحية (اختر صورة وارفعها على موقع خارجي ثم الصق رابطها هنا)</label>
-        <input id="imageUrl" type="text" placeholder="مثال: https://i.imgur.com/example.jpg" />
-                <div style="height:12px"></div>
-        <div style="display:flex;gap:8px">
-          <button id="publishBtn">نشر</button>
-          <button id="clearBtn" style="background:#334155;color:#e6eef6">مسح الحقول</button>
-        </div>
+        <label>وسم/تصنيف (اختياري)</label>
+        <input id="tag" type="text" placeholder="مثال: محادثة، صورة، ترجمة" />
 
-        <div style="height:12px"></div>
-        <div class="muted">نصيحة: استخدم وصفًا دقيقًا واختبر البرومت في النموذج الذي ستستخدمه (مثل ChatGPT أو Midjourney).</div>
-      </aside>
+        <div style="height:12px"></div>
+        <div style="display:flex;gap:8px">
+          <button id="publishBtn">نشر</button>
+          <button id="clearBtn" style="background:#334155;color:#e6eef6">مسح الحقول</button>
+        </div>
 
-      <section>
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-            <div style="flex:1;display:flex;gap:8px;align-items:center">
-              <input id="searchInput" type="text" placeholder="ابحث في العناوين أو النص أو الوسوم" />
-              <select id="filterTag"><option value="">تصفية حسب الوسم</option></select>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              </div>
-          </div>
+        <div style="height:12px"></div>
+        <div class="muted">نصيحة: استخدم وصفًا دقيقًا واختبر البرومت في النموذج الذي ستستخدمه (مثل ChatGPT أو Midjourney).</div>
+      </aside>
 
-          <div id="postsContainer" class="posts"></div>
-          <div id="emptyState" class="empty" style="display:none">لا توجد برومبتات بعد — كن أول من ينشر!</div>
-        </div>
+      <section>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div style="flex:1;display:flex;gap:8px;align-items:center">
+              <input id="searchInput" type="text" placeholder="ابحث في العناوين أو النص أو الوسوم" />
+              <select id="filterTag"><option value="">تصفية حسب الوسم</option></select>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              </div>
+          </div>
 
-        <div style="height:12px"></div>
-        <div class="card" style="padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <div class="chip">محفوظ في: Firebase Firestore</div>
-          <div class="chip">عدد البرومبتات: <span id="count">0</span></div>
-          <div class="chip">الحالة: متصل</div>
-        </div>
-      </section>
-    </div>
-  </main>
+          <div id="postsContainer" class="posts"></div>
+          <div id="emptyState" class="empty" style="display:none">لا توجد برومبتات بعد — كن أول من ينشر!</div>
+        </div>
 
-  <footer>
-    تمّ التصميم بواسطة "يوسف" — الموقع منشور عبر GitHub Pages ومتصل بـ Firebase Firestore.
-  </footer>
+        <div style="height:12px"></div>
+        <div class="card" style="padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <div class="chip">محفوظ في: Firebase Firestore</div>
+          <div class="chip">عدد البرومبتات: <span id="count">0</span></div>
+          <div class="chip">الحالة: متصل</div>
+        </div>
+      </section>
+    </div>
+  </main>
 
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <footer>
+    تمّ التصميم بواسطة "يوسف" — الموقع منشور عبر GitHub Pages ومتصل بـ Firebase Firestore.
+  </footer>
 
-  <script>
-  // /////////////////////////////////////////////////////////////
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+  <script>
+  // /////////////////////////////////////////////////////////////
 // // محتوى وسم <script> بالكامل بعد الدمج //
 // /////////////////////////////////////////////////////////////
 
@@ -132,177 +130,165 @@ const el = id => document.getElementById(id);
 
 function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
-const LIKES_STORAGE_KEY = 'yousef_liked_prompts'; 
-
 
 // 3. وظيفة العرض (render) الجديدة لسحب البيانات من Firestore
-const render = async () => { 
-  const container = el('postsContainer');
-  container.innerHTML = '';
-  
-  // جلب الإعجابات من الذاكرة المحلية
-  const likedPrompts = JSON.parse(localStorage.getItem(LIKES_STORAGE_KEY) || '[]');
+const render = async () => { 
+  const container = el('postsContainer');
+  container.innerHTML = '';
   
-  // يتم ترتيب المنشورات حسب وقت النشر الأحدث
-  let query = db.collection(PROMPTS_COLLECTION).orderBy('createdAt', 'desc');
+  // يتم ترتيب المنشورات حسب وقت النشر الأحدث
+  let query = db.collection(PROMPTS_COLLECTION).orderBy('createdAt', 'desc');
 
-  const filter = el('filterTag').value.trim();
-  const q = el('searchInput').value.trim().toLowerCase();
+  const filter = el('filterTag').value.trim();
+  const q = el('searchInput').value.trim().toLowerCase();
 
-  let visible = [];
-  try {
-    const snapshot = await query.get();
-    snapshot.forEach(doc => {
-        // إضافة البيانات مع ID الوثيقة
-        const p = { id: doc.id, ...doc.data() }; 
+  let visible = [];
+  try {
+    const snapshot = await query.get();
+    snapshot.forEach(doc => {
+        // إضافة البيانات مع ID الوثيقة
+        const p = { id: doc.id, ...doc.data() }; 
 
-        // تطبيق البحث والتصفية
-        if(filter && p.tag !== filter) return;
-        if(q && !((p.title||'').toLowerCase().includes(q) || p.prompt.toLowerCase().includes(q) || (p.author||'').toLowerCase().includes(q) || (p.tag||'').toLowerCase().includes(q))) return;
+        // تطبيق البحث والتصفية
+        if(filter && p.tag !== filter) return;
+        if(q && !((p.title||'').toLowerCase().includes(q) || p.prompt.toLowerCase().includes(q) || (p.author||'').toLowerCase().includes(q) || (p.tag||'').toLowerCase().includes(q))) return;
 
-        visible.push(p);
-    });
-  } catch (e) {
-      console.error("خطأ في جلب البيانات:", e);
-      return;
-  }
-  
+        visible.push(p);
+    });
+  } catch (e) {
+      console.error("خطأ في جلب البيانات:", e);
+      // alert('حدث خطأ أثناء جلب المنشورات من قاعدة البيانات.'); // لا تظهر تنبيه الجلب في كل مرة
+      return;
+  }
+  
 
-  if(visible.length===0){ el('emptyState').style.display='block'; } else { el('emptyState').style.display='none'; }
-  el('count').innerText = visible.length;
-  
-  visible.forEach(p=>{
-    const div = document.createElement('div'); div.className='post';
-    
-    // تحويل وقت الخادم إلى تاريخ محلي
-    const displayDate = p.createdAt && p.createdAt.toDate ? p.createdAt.toDate().toLocaleString('ar-EG') : 'الآن';
-
-    // التحقق من حالة الإعجاب وتغيير الزر
-    const isLiked = likedPrompts.includes(p.id);
-    const likeButtonText = isLiked ? 'أعجبني' : 'إعجاب'; // تغيير النص
-    const likeButtonStyle = isLiked ? 'background:#ef4444' : ''; 
+  if(visible.length===0){ el('emptyState').style.display='block'; } else { el('emptyState').style.display='none'; }
+  el('count').innerText = visible.length;
+  
+  visible.forEach(p=>{
+    const div = document.createElement('div'); div.className='post';
     
-    // ⭐️ إضافة جزء عرض الصورة إذا كان الرابط موجوداً
-    const imageHtml = p.imageUrl ? `<img src="${escapeHtml(p.imageUrl)}" style="max-width:100%; height:auto; max-height: 200px; border-radius:8px; margin-bottom:10px; display:block; object-fit: cover;" alt="صورة البرومبت" />` : '';
+    // تحويل وقت الخادم إلى تاريخ محلي
+    const displayDate = p.createdAt && p.createdAt.toDate ? p.createdAt.toDate().toLocaleString('ar-EG') : 'الآن';
 
+    div.innerHTML = `
+      <div class="meta">
+        <div>
+          <strong>${escapeHtml(p.title || 'بدون عنوان')}</strong>
+          <div class="muted">${escapeHtml(p.author || 'مجهول')} · ${displayDate}</div>
+        </div>
+        <div style="text-align:left;min-width:140px">
+          <span class="chip">${escapeHtml(p.tag||'عام')}</span>
+        </div>
+      </div>
+      <div class="content">${escapeHtml(p.prompt)}</div>
+      <div class="actions">
+        <button onclick='copyPrompt("${p.id}")'>نسخ</button>
+        <button onclick='toggleLike("${p.id}")'>${p.likes||0} ❤️</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
 
-    div.innerHTML = `
-      <div class="meta">
-        <div>
-          <strong>${escapeHtml(p.title || 'بدون عنوان')}</strong>
-          <div class="muted">${escapeHtml(p.author || 'مجهول')} · ${displayDate}</div>
-        </div>
-        <div style="text-align:left;min-width:140px">
-          <span class="chip">${escapeHtml(p.tag||'عام')}</span>
-        </div>
-      </div>
-      ${imageHtml}       <div class="content">${escapeHtml(p.prompt)}</div>
-      <div class="actions">
-        <button onclick='copyPrompt("${p.id}")'>نسخ</button>
-        <button onclick='toggleLike("${p.id}")' style="${likeButtonStyle}">${p.likes||0} ❤️ ${likeButtonText}</button>
-        
-      </div>
-    `;
-    container.appendChild(div);
-  });
-
-  refreshFilterOptions(visible.map(p=>p.tag).filter(Boolean));
+  refreshFilterOptions(visible.map(p=>p.tag).filter(Boolean));
 }
 
 
-// 4. تعديل وظيفة النشر (Publish) لاستقبال الرابط مباشرة
+// 4. تعديل وظيفة النشر (Publish) لإرسال البيانات إلى Firestore
 document.getElementById('publishBtn').addEventListener('click', async ()=>{
-  const prompt = el('prompt').value.trim(); 
-  if(!prompt){ alert('اكتب نص البرومت قبل النشر.'); return; }
+  const prompt = el('prompt').value.trim(); if(!prompt){ alert('اكتب نص البرومت قبل النشر.'); return; }
+  const postData = {
+    title: el('title').value.trim(),
+    author: el('author').value.trim(),
+    tag: el('tag').value.trim(),
+    prompt: prompt,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(), 
+    likes: 0
+  };
   
-  // ⭐️⭐️ نحصل على الرابط مباشرة ⭐️⭐️
-  const imageUrl = el('imageUrl').value.trim();
-  
-  const postData = {
-    title: el('title').value.trim(),
-    author: el('author').value.trim(),
-    tag: el('tag').value.trim(),
-    prompt: prompt,
-    imageUrl: imageUrl, // ⭐️ حفظ رابط الصورة
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(), 
-    likes: 0
-  };
-  
-  try {
-    await db.collection(PROMPTS_COLLECTION).add(postData);
-    alert('تم نشر البرومت بنجاح!');
-    el('title').value=''; 
-    el('prompt').value=''; 
-    el('tag').value='';
-    el('imageUrl').value=''; // ⭐️ مسح حقل الرابط
-    render(); 
-  } catch (e) {
-    console.error("خطأ في إضافة الوثيقة: ", e);
-    alert('حدث خطأ أثناء النشر.');
-  }
+  try {
+    await db.collection(PROMPTS_COLLECTION).add(postData);
+    alert('تم نشر البرومت بنجاح!');
+    el('title').value=''; el('prompt').value=''; el('tag').value='';
+    render(); 
+  } catch (e) {
+    console.error("خطأ في إضافة الوثيقة: ", e);
+    alert('حدث خطأ أثناء النشر.'); // هذا هو الخطأ الذي ظهر لك
+  }
 });
 
-// ⭐️ تعديل دالة مسح الحقول 
-el('clearBtn').addEventListener('click', ()=>{ 
-    el('title').value=''; 
-    el('prompt').value=''; 
-    el('tag').value=''; 
-    el('author').value=''; 
-    el('imageUrl').value=''; 
-});
+el('clearBtn').addEventListener('click', ()=>{ el('title').value=''; el('prompt').value=''; el('tag').value=''; el('author').value=''; });
 
-// 5. وظائف التفاعل
-function copyPrompt(id){ 
-    db.collection(PROMPTS_COLLECTION).doc(id).get().then(doc => {
-        if (doc.exists) {
-            navigator.clipboard.writeText(doc.data().prompt).then(()=>{ alert('نُسخ النص إلى الحافظة!'); }); 
-        }
-    });
+// 5. تعديل وظائف التفاعل (الحذف، الإعجاب، التعديل) لاستخدام Firestore
+function copyPrompt(id){ 
+    db.collection(PROMPTS_COLLECTION).doc(id).get().then(doc => {
+        if (doc.exists) {
+            navigator.clipboard.writeText(doc.data().prompt).then(()=>{ alert('نُسخ النص إلى الحافظة!'); }); 
+        }
+    });
 }
 
-// ... (دالة toggleLike) ...
-async function toggleLike(id){ 
-    let likedPrompts = JSON.parse(localStorage.getItem(LIKES_STORAGE_KEY) || '[]');
-    
-    const isLiked = likedPrompts.includes(id);
+async function deletePrompt(id){ 
+  if(!confirm('هل تريد حذف هذا البرومت؟')) return; 
+  try {
+    await db.collection(PROMPTS_COLLECTION).doc(id).delete();
+    render(); 
+  } catch(e) {
+    alert('حدث خطأ في الحذف.');
+  }
+}
 
-    const docRef = db.collection(PROMPTS_COLLECTION).doc(id);
+async function editPrompt(id){ 
+    const currentDoc = await db.collection(PROMPTS_COLLECTION).doc(id).get();
+    if (!currentDoc.exists) return;
+    const p = currentDoc.data();
     
+    const newText = prompt('حرر نص البرومت:', p.prompt); 
+    if(newText===null) return; 
+    
+    const newTitle = prompt('غير العنوان (اترك فارغًا للإبقاء):', p.title) || p.title;
+
     try {
-        if (isLiked) {
-            await docRef.update({ likes: firebase.firestore.FieldValue.increment(-1) });
-            likedPrompts = likedPrompts.filter(likedId => likedId !== id);
-            alert('تم إلغاء الإعجاب.');
-        } else {
-            await docRef.update({ likes: firebase.firestore.FieldValue.increment(1) });
-            likedPrompts.push(id);
-            alert('أعجبك البرومبت!');
-        }
-        
-        localStorage.setItem(LIKES_STORAGE_KEY, JSON.stringify(likedPrompts));
-        
+        await db.collection(PROMPTS_COLLECTION).doc(id).update({
+            prompt: newText,
+            title: newTitle
+        });
         render();
-        
     } catch(e) {
-        console.error("خطأ في الإعجاب: ", e);
-        alert('حدث خطأ في عملية الإعجاب/الإلغاء.');
+        alert('حدث خطأ في التعديل.');
     }
 }
 
+async function toggleLike(id){ 
+    try {
+        const docRef = db.collection(PROMPTS_COLLECTION).doc(id);
+        // زيادة العدد في قاعدة البيانات
+        await docRef.update({ 
+            likes: firebase.firestore.FieldValue.increment(1) 
+        });
+        render();
+    } catch(e) {
+        alert('حدث خطأ في الإعجاب.');
+    }
+}
 
-function refreshFilterOptions(tags){ 
-  const select = el('filterTag'); 
-  const uniqueTags = Array.from(new Set(tags));
-  const old = select.value; 
-  select.innerHTML = '<option value="">تصفية حسب الوسم</option>' + uniqueTags.map(t=>`<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join(''); 
-  if(uniqueTags.includes(old)) select.value = old; 
+function refreshFilterOptions(tags){ 
+  const select = el('filterTag'); 
+  const uniqueTags = Array.from(new Set(tags));
+  const old = select.value; 
+  select.innerHTML = '<option value="">تصفية حسب الوسم</option>' + uniqueTags.map(t=>`<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join(''); 
+  if(uniqueTags.includes(old)) select.value = old; 
 }
 
 el('filterTag').addEventListener('change', render);
 el('searchInput').addEventListener('input', render);
 
+// (تم إزالة كود التصدير والاستيراد لأنه لا يعمل مع Firebase)
+
 // init
 render();
-  </script>
+  </script>
 </body>
 </html>
+
+
