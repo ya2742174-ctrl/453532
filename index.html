@@ -132,9 +132,17 @@ function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<',
 
 
 // 3. وظيفة العرض (render) الجديدة لسحب البيانات من Firestore
+// ... (قبل الوظيفة render)
+const LIKES_STORAGE_KEY = 'yousef_liked_prompts';
+// ... (بعد الدالة escapeHtml وقبل render)
+
+// 3. وظيفة العرض (render) الجديدة لسحب البيانات من Firestore
 const render = async () => { 
   const container = el('postsContainer');
   container.innerHTML = '';
+  
+  // ⭐️⭐️⭐️ التعديل الأول: جلب الإعجابات من المتصفح
+  const likedPrompts = JSON.parse(localStorage.getItem(LIKES_STORAGE_KEY) || '[]');
   
   // يتم ترتيب المنشورات حسب وقت النشر الأحدث
   let query = db.collection(PROMPTS_COLLECTION).orderBy('createdAt', 'desc');
@@ -144,6 +152,7 @@ const render = async () => {
 
   let visible = [];
   try {
+    // ... (كود جلب البيانات بدون تغيير)
     const snapshot = await query.get();
     snapshot.forEach(doc => {
         // إضافة البيانات مع ID الوثيقة
@@ -155,6 +164,49 @@ const render = async () => {
 
         visible.push(p);
     });
+  } catch (e) {
+      console.error("خطأ في جلب البيانات:", e);
+      return;
+  }
+  
+
+  if(visible.length===0){ el('emptyState').style.display='block'; } else { el('emptyState').style.display='none'; }
+  el('count').innerText = visible.length;
+  
+  visible.forEach(p=>{
+    const div = document.createElement('div'); div.className='post';
+    
+    // تحويل وقت الخادم إلى تاريخ محلي
+    const displayDate = p.createdAt && p.createdAt.toDate ? p.createdAt.toDate().toLocaleString('ar-EG') : 'الآن';
+    
+    // ⭐️⭐️⭐️ التعديل الثاني: التحقق من حالة الإعجاب وتعديل الزر
+    const isLiked = likedPrompts.includes(p.id);
+    const likeButtonText = isLiked ? '❤️ أعجبني' : '❤️ إعجاب';
+    const likeButtonStyle = isLiked ? 'background:#ef4444' : ''; // لون أحمر إذا كان معجباً به
+    
+    div.innerHTML = `
+      <div class="meta">
+        <div>
+          <strong>${escapeHtml(p.title || 'بدون عنوان')}</strong>
+          <div class="muted">${escapeHtml(p.author || 'مجهول')} · ${displayDate}</div>
+        </div>
+        <div style="text-align:left;min-width:140px">
+          <span class="chip">${escapeHtml(p.tag||'عام')}</span>
+        </div>
+      </div>
+      <div class="content">${escapeHtml(p.prompt)}</div>
+      <div class="actions">
+        <button onclick='copyPrompt("${p.id}")'>نسخ</button>
+        <button onclick='toggleLike("${p.id}")' style="${likeButtonStyle}">${p.likes||0} ${likeButtonText}</button>
+        <button onclick='editPrompt("${p.id}")' style="background:#f97316">تعديل</button>
+        <button onclick='deletePrompt("${p.id}")' style="background:#ef4444">حذف</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  refreshFilterOptions(visible.map(p=>p.tag).filter(Boolean));
+}
   } catch (e) {
       console.error("خطأ في جلب البيانات:", e);
       // alert('حدث خطأ أثناء جلب المنشورات من قاعدة البيانات.'); // لا تظهر تنبيه الجلب في كل مرة
@@ -290,4 +342,5 @@ render();
   </script>
 </body>
 </html>
+
 
