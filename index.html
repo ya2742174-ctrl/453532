@@ -166,19 +166,25 @@ function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<',
 
 
 // 3. وظيفة العرض (render) الجديدة لسحب البيانات من Firestore
+// 3. وظيفة العرض (render) الجديدة لسحب البيانات من Firestore
 const render = async () => { 
-  const container = el('postsContainer');
-  container.innerHTML = '';
+  // ... الكود السابق ...
+  // ...
   
-  // يتم ترتيب المنشورات حسب وقت النشر الأحدث
-  let query = db.collection(PROMPTS_COLLECTION).orderBy('createdAt', 'desc');
-
-  const filter = el('filterTag').value.trim();
-  const q = el('searchInput').value.trim().toLowerCase();
+    // **>>>>> (جديد) دالة مساعدة لجلب التعليقات <<<<<**
+    const fetchComments = async (promptId) => {
+        const commentsSnapshot = await db.collection('comments')
+            .where('promptId', '==', promptId)
+            .orderBy('createdAt', 'asc')
+            .get();
+        return commentsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    };
+    // **>>>>> (نهاية الدالة المساعدة) <<<<<**
 
   let visible = [];
   try {
     const snapshot = await query.get();
+    // ... الكود السابق ...
     snapshot.forEach(doc => {
         // إضافة البيانات مع ID الوثيقة
         const p = { id: doc.id, ...doc.data() }; 
@@ -324,6 +330,7 @@ render();
   </script>
 </body>
 </html>
+
 
 
 
