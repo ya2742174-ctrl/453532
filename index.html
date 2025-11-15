@@ -212,21 +212,21 @@ const render = async () => {
     const displayDate = p.createdAt && p.createdAt.toDate ? p.createdAt.toDate().toLocaleString('ar-EG') : 'الآن';
 
     div.innerHTML = `
-      <div class="meta">
-        <div>
-          <strong>${escapeHtml(p.title || 'بدون عنوان')}</strong>
-          <div class="muted">${escapeHtml(p.author || 'مجهول')} · ${displayDate}</div>
-        </div>
-        <div style="text-align:left;min-width:140px">
-          <span class="chip">${escapeHtml(p.tag||'عام')}</span>
-        </div>
-      </div>
-      <div class="content">${escapeHtml(p.prompt)}</div>
-      <div class="actions">
-        <button onclick='copyPrompt("${p.id}")'>نسخ</button>
-        <button onclick='toggleLike("${p.id}")'>${p.likes||0} ❤️</button>
-      </div>
-    `;
+      <div class="meta">
+        <div>
+          <strong>${escapeHtml(p.title || 'بدون عنوان')}</strong>
+          <div class="muted">${escapeHtml(p.author || 'مجهول')} · ${displayDate}</div>
+        </div>
+        <div style="text-align:left;min-width:140px">
+          <span class="chip">${escapeHtml(p.tag||'عام')}</span>
+        </div>
+      </div>
+      <div class="content">${escapeHtml(p.prompt)}</div>
+      <div class="actions">
+        <button onclick='copyPrompt("${p.id}")'>نسخ</button>
+        <button onclick='toggleLike("${p.id}")'>${p.likes||0} ❤️</button>
+      </div>
+    `;
     container.appendChild(div);
   });
 
@@ -330,6 +330,7 @@ render();
   </script>
 </body>
 </html>
+
 
 
 
