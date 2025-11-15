@@ -38,7 +38,7 @@
     <div class="brand">
       <div class="logo">يوسف</div>
       <div>
-        <h1>يا مكاريوس التغيرات اتحفظة ولا </h1>
+        <h1>يوسف وا مكاريوس</h1>
         <p class="lead">منصة بسيطة لنشر ومشاركة البرومبتات — أنشر، انسخ، وجرّب</p>
       </div>
     </div>
@@ -184,8 +184,8 @@ const render = async () => { 
       <div class="actions">
         <button onclick='copyPrompt("${p.id}")'>نسخ</button>
         <button onclick='toggleLike("${p.id}")'>${p.likes||0} ❤️</button>
-              </div>
-        
+      </div>
+
       <div class="comments-section" style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
         <div class="comment-form" style="display:flex; gap:8px; margin-bottom: 15px; align-items: stretch;">
           <input type="text" id="commentText-${p.id}" placeholder="اكتب تعليقك..." style="flex:1; margin-top:0;" />
@@ -229,7 +229,7 @@ document.getElementById('publishBtn').addEventListener('click', async ()=>{
 
 el('clearBtn').addEventListener('click', ()=>{ el('title').value=''; el('prompt').value=''; el('tag').value=''; el('author').value=''; });
 
-// 5. وظائف التفاعل (نسخ وإعجاب)
+// 5. تعديل وظائف التفاعل (الحذف، الإعجاب، التعديل) لاستخدام Firestore
 function copyPrompt(id){ 
     db.collection(PROMPTS_COLLECTION).doc(id).get().then(doc => {
         if (doc.exists) {
@@ -238,10 +238,41 @@ function copyPrompt(id){ 
     });
 }
 
-// دالة الإعجاب المبسطة (كما كانت لديك)
+async function deletePrompt(id){ 
+  if(!confirm('هل تريد حذف هذا البرومت؟')) return; 
+  try {
+    await db.collection(PROMPTS_COLLECTION).doc(id).delete();
+    render(); 
+  } catch(e) {
+    alert('حدث خطأ في الحذف.');
+  }
+}
+
+async function editPrompt(id){ 
+    const currentDoc = await db.collection(PROMPTS_COLLECTION).doc(id).get();
+    if (!currentDoc.exists) return;
+    const p = currentDoc.data();
+    
+    const newText = prompt('حرر نص البرومت:', p.prompt); 
+    if(newText===null) return; 
+    
+    const newTitle = prompt('غير العنوان (اترك فارغًا للإبقاء):', p.title) || p.title;
+
+    try {
+        await db.collection(PROMPTS_COLLECTION).doc(id).update({
+            prompt: newText,
+            title: newTitle
+        });
+        render();
+    } catch(e) {
+        alert('حدث خطأ في التعديل.');
+    }
+}
+
 async function toggleLike(id){ 
     try {
         const docRef = db.collection(PROMPTS_COLLECTION).doc(id);
+        // زيادة العدد في قاعدة البيانات
         await docRef.update({ 
             likes: firebase.firestore.FieldValue.increment(1) 
         });
@@ -251,14 +282,13 @@ async function toggleLike(id){ 
     }
 }
 
-
 // ⭐️⭐️ الدوال الجديدة للتعليقات ⭐️⭐️
 
 // دالة لنشر تعليق جديد
 async function postComment(promptId) {
     const commentInput = el(`commentText-${promptId}`);
     const commentText = commentInput.value.trim();
-    const commentAuthor = prompt('ما هو اسمك لنشر التعليق؟ (اختياري)'); // طلب اسم المستخدم
+    const commentAuthor = prompt('ما هو اسمك لنشر التعليق؟ (اختياري)'); 
     
     if (!commentText) {
         alert('الرجاء كتابة نص التعليق.');
@@ -272,10 +302,9 @@ async function postComment(promptId) {
     };
 
     try {
-        // إضافة التعليق إلى المجموعة الفرعية (Subcollection)
         await db.collection(PROMPTS_COLLECTION).doc(promptId).collection('comments').add(commentData);
-        commentInput.value = ''; // مسح حقل الإدخال
-        renderComments(promptId); // إعادة عرض التعليقات المحدثة
+        commentInput.value = ''; 
+        renderComments(promptId); 
     } catch (e) {
         console.error("خطأ في نشر التعليق:", e);
         alert('حدث خطأ أثناء نشر التعليق. تأكد من إعداد قواعد Firestore.');
@@ -285,10 +314,9 @@ async function postComment(promptId) {
 // دالة لقراءة وعرض التعليقات لمنشور معين
 async function renderComments(promptId) {
     const commentsContainer = el(`commentsContainer-${promptId}`);
-    commentsContainer.innerHTML = ''; // مسح المحتوى القديم
+    commentsContainer.innerHTML = ''; 
 
     try {
-        // جلب التعليقات من المجموعة الفرعية وترتيبها حسب الأقدم
         const snapshot = await db.collection(PROMPTS_COLLECTION).doc(promptId).collection('comments').orderBy('createdAt', 'asc').get();
         
         if (snapshot.empty) {
@@ -299,7 +327,6 @@ async function renderComments(promptId) {
         let commentsHtml = '';
         snapshot.forEach(doc => {
             const c = doc.data();
-            // عرض وقت التعليق فقط (ساعة ودقيقة)
             const displayTime = c.createdAt && c.createdAt.toDate ? c.createdAt.toDate().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) : '';
 
             commentsHtml += `
@@ -316,7 +343,6 @@ async function renderComments(promptId) {
 
     } catch (e) {
         console.error("خطأ في عرض التعليقات:", e);
-        // لا تظهر خطأ للمستخدمين، فقط رسالة بسيطة
         commentsContainer.innerHTML = '<div class="muted">تعذر تحميل التعليقات.</div>';
     }
 }
