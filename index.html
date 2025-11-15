@@ -73,6 +73,40 @@
       </aside>
 
       <section>
+        // /////////////////////////////////////////////////////////////
+// 6. دالة نشر التعليق
+// /////////////////////////////////////////////////////////////
+
+async function postComment(promptId) {
+    // الحصول على نص التعليق من الحقل الخاص بهذا البرومت
+    const commentInput = document.getElementById(`commentInput-${promptId}`);
+    const commentText = commentInput.value.trim();
+
+    if (!commentText) {
+        alert('اكتب التعليق قبل الإرسال.');
+        return;
+    }
+
+    // يمكنك طلب اسم المعلق هنا اختيارياً
+    const commenterName = prompt('اسمك (اختياري):') || 'مجهول';
+
+    const commentData = {
+        promptId: promptId, // الربط بالبرومت
+        author: commenterName.trim(),
+        text: commentText,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+
+    try {
+        await db.collection('comments').add(commentData);
+        commentInput.value = ''; // مسح حقل الإدخال
+        // إعادة عرض القائمة لتحديث التعليقات
+        render(); 
+    } catch (e) {
+        console.error("خطأ في إضافة التعليق: ", e);
+        alert('حدث خطأ أثناء نشر التعليق.');
+    }
+}
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
             <div style="flex:1;display:flex;gap:8px;align-items:center">
@@ -290,5 +324,6 @@ render();
   </script>
 </body>
 </html>
+
 
 
