@@ -204,7 +204,7 @@ const render = async () => { 
 }
 
 
-// 4. تعديل وظيفة النشر (Publish) لإرسال البيانات إلى Firestore
+// 4. وظيفة النشر (Publish)
 document.getElementById('publishBtn').addEventListener('click', async ()=>{
   const prompt = el('prompt').value.trim(); if(!prompt){ alert('اكتب نص البرومت قبل النشر.'); return; }
   const postData = {
@@ -219,7 +219,7 @@ document.getElementById('publishBtn').addEventListener('click', async ()=>{
   try {
     await db.collection(PROMPTS_COLLECTION).add(postData);
     alert('تم نشر البرومت بنجاح!');
-    el('title').value=''; el('prompt').value=''; el('tag').value=''; el('author').value=''; // مسح حقل author
+    el('title').value=''; el('prompt').value=''; el('tag').value=''; el('author').value='';
     render(); 
   } catch (e) {
     console.error("خطأ في إضافة الوثيقة: ", e);
@@ -229,7 +229,7 @@ document.getElementById('publishBtn').addEventListener('click', async ()=>{
 
 el('clearBtn').addEventListener('click', ()=>{ el('title').value=''; el('prompt').value=''; el('tag').value=''; el('author').value=''; });
 
-// 5. تعديل وظائف التفاعل (الحذف، الإعجاب، التعديل) لاستخدام Firestore
+// 5. وظائف التفاعل
 function copyPrompt(id){ 
     db.collection(PROMPTS_COLLECTION).doc(id).get().then(doc => {
         if (doc.exists) {
