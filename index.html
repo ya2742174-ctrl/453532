@@ -359,7 +359,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const PROMPTS_COLLECTION = 'prompts'; // اسم المجموعة
-    const ADMIN_SECRET = '1541777914111'; // رمز سري بسيط للحماية المؤقتة للحذف والتعديل
+    const ADMIN_SECRET = 'your-secret-code'; // رمز سري بسيط للحماية المؤقتة للحذف والتعديل
 
     const el = id => document.getElementById(id);
 
@@ -491,7 +491,7 @@
 
     async function editPrompt(id) {
       // حماية بسيطة
-      const code = prompt(المبرمج يوسف فقط يمكنه التعديل);
+      const code = prompt('أدخل الرمز السري للتعديل:');
       if (code !== ADMIN_SECRET) {
         alert('رمز غير صحيح. لا يمكن التعديل.');
         return;
@@ -549,4 +549,3 @@
   </script>
 </body>
 </html>
-
